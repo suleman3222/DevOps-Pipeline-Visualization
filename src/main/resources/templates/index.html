@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>DevOps Pipeline Visualizer</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; margin: 24px; }
+    h1 { margin-bottom: 8px; }
+    .btn { display:inline-block; padding:10px 16px; background:#2d89ef; color:white; text-decoration:none; border-radius:6px; }
+    .pipeline { display:flex; gap:12px; align-items:flex-start; margin-top:20px; }
+    .stage { padding:14px; width:140px; border-radius:8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align:center; }
+    .stage .name { font-weight:700; margin-bottom:6px; }
+    .status-Pending { background:#f3f3f3; color:#333; }
+    .status-Running { background:#FFF4CC; color:#6b4600; }
+    .status-Success { background:#dff0d8; color:#27632a; }
+    .status-Failed { background:#f8d7da; color:#7b1f24; }
+    .recent { margin-top:24px; }
+    table { width:100%; border-collapse:collapse; margin-top:12px; }
+    th, td { text-align:left; padding:8px; border-bottom:1px solid #eee; font-size:14px; }
+    .small { font-size:12px; color:#666; }
+  </style>
+</head>
+<body>
+  <h1>DevOps Pipeline Visualizer</h1>
+  <form action="/run" method="post" style="display:inline;">
+    <button class="btn" type="submit">Run Pipeline</button>
+  </form>
+
+  <div th:if="${currentRunId != ''}" style="margin-top:18px;">
+    <h3>Run ID: <span th:text="${currentRunId}"></span></h3>
+    <div class="pipeline">
+      <div th:each="stage : ${runStages}"
+           th:class="'stage status-' + ${stage.status}">
+        <div class="name" th:text="${stage.name}">Stage</div>
+        <div class="small">Status: <strong th:text="${stage.status}">Pending</strong></div>
+        <div class="small" th:if="${stage.startedAt != null}">
+          Started: <span th:text="${#dates.format(stage.startedAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
+        </div>
+        <div class="small" th:if="${stage.finishedAt != null}">
+          Duration: <span th:text="${stage.durationMs}"></span> ms
+        </div>
+        <pre style="text-align:left; font-size:12px; margin-top:8px; white-space:pre-wrap;" th:text="${stage.logs}"></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="recent">
+    <h3>Recent Stages (latest 50)</h3>
+    <table>
+      <thead>
+        <tr><th>Run ID</th><th>Stage</th><th>Status</th><th>Started</th><th>Duration (ms)</th></tr>
+      </thead>
+      <tbody>
+        <tr th:each="s : ${recentStages}">
+          <td th:text="${s.runId}">runId</td>
+          <td th:text="${s.name}">Stage</td>
+          <td th:text="${s.status}">Status</td>
+          <td th:text="${s.startedAt != null ? #dates.format(s.startedAt, 'yyyy-MM-dd HH:mm:ss') : '-'}">Started</td>
+          <td th:text="${s.durationMs}">0</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
