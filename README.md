@@ -57,12 +57,12 @@ Copy code
 ### 1. Pipeline Data Storage (MongoDB)
 This output shows pipeline execution details stored in MongoDB, including stage name, status, execution duration, and logs. This confirms data integrity and consistency of pipeline runs.
 
-![MongoDB Pipeline Stages](screenshots/mongodb_pipeline_stages.png)
+![MongoDB Pipeline Stages](screenshots/Screenshot 2025-10-13 101721.png)
 
 ### 2. DevOps Pipeline Visualizer – Web Output
 The web interface visually represents pipeline stages with success/failure status and execution details. It also provides a summary view of recent pipeline runs.
 
-![Pipeline Visualizer UI](screenshots/pipeline_visualizer_ui.png)
+![Pipeline Visualizer UI](screenshots/Screenshot 2025-10-13 140225.png)
 
 ---
 
